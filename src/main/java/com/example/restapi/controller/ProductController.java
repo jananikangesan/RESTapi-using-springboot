@@ -18,8 +18,9 @@ public class ProductController {
     public void productRepository(ProductRepository productRepository){
         this.productRepository=productRepository;
     }
+
     @RequestMapping(path= "{id}" , method= RequestMethod.GET)
     public Product getProduct(@PathVariable(name = "id") String id){
-        return productRepository.findOne(id);
+        return productRepository.findById(id).orElse(null);
     }
 }
