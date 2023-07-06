@@ -3,10 +3,8 @@ package com.example.restapi.controller;
 import com.example.restapi.model.Product;
 import com.example.restapi.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path="/api/products/")
@@ -23,4 +21,11 @@ public class ProductController {
     public Product getProduct(@PathVariable(name = "id") String id){
         return productRepository.findById(id).orElse(null);
     }
+
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Product saveProduct(@RequestBody Product productToSave){
+        return productRepository.save(productToSave);
+    }
+
+
 }
