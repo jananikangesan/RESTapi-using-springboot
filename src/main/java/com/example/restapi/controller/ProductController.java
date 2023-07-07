@@ -35,16 +35,16 @@ public class ProductController {
     @RequestMapping(path="{id}",method=RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Product updateProduct(@RequestBody Product productToUpdate, @PathVariable(name="id") String id){
         Product foundProduct =productRepository.findById(id).orElse(null);;
-        if(foundProduct!=null){
+        //if(foundProduct!=null){
             foundProduct.setName(productToUpdate.getName());
             foundProduct.setDescription(productToUpdate.getDescription());
             foundProduct.setType(productToUpdate.getType());
             foundProduct.setCategory(productToUpdate.getCategory());
             return productRepository.save(foundProduct);
-        }else{
-            LOG.info("No products found with given id");
-            return productToUpdate;
-        }
+//        }else{
+//            LOG.info("No products found with given id");
+//            return productToUpdate;
+//        }
 
     }
 
