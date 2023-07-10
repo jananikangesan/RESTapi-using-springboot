@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path="/api/products/")
 public class ProductController {
 
-    private ProductRepository productRepository;
+   // private ProductRepository productRepository;
     private ProductsService productsService;
     private Logger LOG= LoggerFactory.getLogger(ProductController.class);
 
@@ -24,17 +24,19 @@ public class ProductController {
         this.productsService = productsService;
     }
 
-    @Autowired
-    public void productRepository(ProductRepository productRepository){
-        this.productRepository=productRepository;
-    }
+//    @Autowired
+//    public void productRepository(ProductRepository productRepository){
+//        this.productRepository=productRepository;
+//    }
 
+    //get
     @RequestMapping(path= "{id}" , method= RequestMethod.GET)
     public Product getProduct(@PathVariable(name = "id") String id){
         //return productRepository.findById(id).orElse(null);
         return productsService.getProduct(id);
     }
 
+    //store
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Product saveProduct(@RequestBody Product productToSave){
 
@@ -42,6 +44,7 @@ public class ProductController {
         return productsService.saveProduct(productToSave);
     }
 
+    //update
     @RequestMapping(path="{id}",method=RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Product updateProduct(@RequestBody Product productToUpdate, @PathVariable(name="id") String id){
        /* Product foundProduct =productRepository.findById(id).orElse(null);;
@@ -60,20 +63,17 @@ public class ProductController {
 
     }
 
+    //delete
     @RequestMapping(path="{id}", method=RequestMethod.DELETE)
     public void deleteProduct(@PathVariable(name="id") String id){
-        Product foundProduct=productRepository.findById(id).orElse(null);
-
-         if(foundProduct!=null){
-             productRepository.delete(foundProduct);
-
-         }
+//        Product foundProduct=productRepository.findById(id).orElse(null);
+//
+//         if(foundProduct!=null){
+//             productRepository.delete(foundProduct);
+//
+//         }
+        productsService.deleteProduct(id);
 
     }
-
-
-
-     
-
 
 }

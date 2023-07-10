@@ -2,13 +2,18 @@ package com.example.restapi.service;
 
 import com.example.restapi.model.Product;
 import com.example.restapi.repository.ProductRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductsService {
 
+    private Logger LOG= LoggerFactory.getLogger(ProductsService.class);
+
     private ProductRepository productRepository;
+
 
     @Autowired
     public void setProductRepository(ProductRepository productRepository) {
@@ -16,24 +21,44 @@ public class ProductsService {
     }
 
     public Product getProduct(String id){
+
+        LOG.info("Getting the product with given id :"+id);
         return productRepository.findById(id).orElse(null);
     }
 
     public Product saveProduct(Product product){
-        return productRepository.save(product);
+        Product productToSave;
+        try{
+            LOG.info("Saving product......");
+           productToSave= productRepository.save(product);
+           return productToSave;
+        }catch(Exception e){
+            LOG.error("An error occurred during product saving:"+ e.getMessage());
+        }
+        return new Product();
     }
 
     public Product updateProduct(Product productToUpdate, String id){
-        Product foundProduct =productRepository.findById(id).orElse(null);;
-        if(foundProduct!=null){
-        foundProduct.setName(productToUpdate.getName());
-        foundProduct.setDescription(productToUpdate.getDescription());
-        foundProduct.setType(productToUpdate.getType());
-        foundProduct.setCategory(productToUpdate.getCategory());
-        return productRepository.save(foundProduct);
-        }else{
-            //LOG.info("No products found with given id");
-            return productToUpdate;
+        Product foundProduct =productRepository.findById(id).orElse(null);
+        try{
+            foundProduct.setName(productToUpdate.getName());
+            foundProduct.setDescription(productToUpdate.getDescription());
+            foundProduct.setType(productToUpdate.getType());
+            foundProduct.setCategory(productToUpdate.getCategory());
+            return productRepository.save(foundProduct);
+        }catch(Exception e){
+            LOG.error("An error occurred during update of product: "+ e.getMessage());
         }
+        return foundProduct;
+    }
+
+    public void deleteProduct(String id){
+        Product foundProduct =productRepository.findById(id).orElse(null);
+       try{
+           productRepository.delete(foundProduct);
+       }catch(Exception e){
+           LOG.error("An error occurred during deleting of product: "+ e.getMessage() );
+       }
+
     }
 }
