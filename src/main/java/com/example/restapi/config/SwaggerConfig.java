@@ -20,7 +20,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 public class SwaggerConfig {
 
-    private static final String SWAGGER_API_VERSION="1.0";
+    private static final String SWAGGER_API_VERSION="1.0.0";
     private static final String LICENCE_TEXT="Licence";
     private static final String title="Products REST API";
     private static final String description="RESTful API for Products";
